@@ -1,0 +1,153 @@
+
+
+================================================================
+== Vivado HLS Report for 'math_accel_Block_ZrsILi32ELb0EE11ap_int_s'
+================================================================
+* Date:           Sun Sep  4 20:47:50 2016
+
+* Version:        2016.2 (Build 1577090 on Thu Jun 02 16:59:10 MDT 2016)
+* Project:        math_accel
+* Solution:       solution1
+* Product family: zynq
+* Target device:  xc7z010clg400-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  20.00|     16.41|        2.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |   20|   20|   20|   20|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+-------+-------+
+|       Name      | BRAM_18K| DSP48E|   FF  |  LUT  |
++-----------------+---------+-------+-------+-------+
+|DSP              |        -|      2|      -|      -|
+|Expression       |        -|      -|      0|      1|
+|FIFO             |        -|      -|      -|      -|
+|Instance         |        -|      0|   1303|   2673|
+|Memory           |        -|      -|      -|      -|
+|Multiplexer      |        -|      -|      -|     20|
+|Register         |        -|      -|    118|      -|
++-----------------+---------+-------+-------+-------+
+|Total            |        0|      2|   1421|   2694|
++-----------------+---------+-------+-------+-------+
+|Available        |      120|     80|  35200|  17600|
++-----------------+---------+-------+-------+-------+
+|Utilization (%)  |        0|      2|      4|     15|
++-----------------+---------+-------+-------+-------+
+
++ Detail: 
+    * Instance: 
+    +-------------------------------------+----------------------------------+---------+-------+------+------+
+    |               Instance              |              Module              | BRAM_18K| DSP48E|  FF  |  LUT |
+    +-------------------------------------+----------------------------------+---------+-------+------+------+
+    |math_accel_dsqrt_64ns_64ns_64_17_U2  |math_accel_dsqrt_64ns_64ns_64_17  |        0|      0|  1114|  2095|
+    |math_accel_uitodp_32s_64_3_U1        |math_accel_uitodp_32s_64_3        |        0|      0|   189|   578|
+    +-------------------------------------+----------------------------------+---------+-------+------+------+
+    |Total                                |                                  |        0|      0|  1303|  2673|
+    +-------------------------------------+----------------------------------+---------+-------+------+------+
+
+    * DSP48: 
+    +-------------------------------------------+----------------------------------------+--------------+
+    |                  Instance                 |                 Module                 |  Expression  |
+    +-------------------------------------------+----------------------------------------+--------------+
+    |math_accel_mac_muladd_16s_16s_32s_32_1_U3  |math_accel_mac_muladd_16s_16s_32s_32_1  | i0 + i1 * i1 |
+    |math_accel_mul_mul_16s_16s_32_1_U4         |math_accel_mul_mul_16s_16s_32_1         |    i0 * i0   |
+    +-------------------------------------------+----------------------------------------+--------------+
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +--------------+----------+-------+---+----+------------+------------+
+    | Variable Name| Operation| DSP48E| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------+----------+-------+---+----+------------+------------+
+    |ap_sig_74     |    or    |      0|  0|   1|           1|           1|
+    +--------------+----------+-------+---+----+------------+------------+
+    |Total         |          |      0|  0|   1|           1|           1|
+    +--------------+----------+-------+---+----+------------+------------+
+
+    * Multiplexer: 
+    +----------------------------+----+-----------+-----+-----------+
+    |            Name            | LUT| Input Size| Bits| Total Bits|
+    +----------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                   |  18|         22|    1|         22|
+    |in_stream_TDATA_blk_n       |   1|          2|    1|          2|
+    |tmp_last_V_2_out_out_blk_n  |   1|          2|    1|          2|
+    +----------------------------+----+-----------+-----+-----------+
+    |Total                       |  20|         26|    3|         26|
+    +----------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------------+----+----+-----+-----------+
+    |         Name        | FF | LUT| Bits| Const Bits|
+    +---------------------+----+----+-----+-----------+
+    |ap_CS_fsm            |  21|   0|   21|          0|
+    |ap_done_reg          |   1|   0|    1|          0|
+    |squared_sum_reg_122  |  32|   0|   32|          0|
+    |tmp_3_i_reg_127      |  64|   0|   64|          0|
+    +---------------------+----+----+-----+-----------+
+    |Total                | 118|   0|  118|          0|
+    +---------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------------+-----+-----+------------+-------------------------------------------+--------------+
+|          RTL Ports          | Dir | Bits|  Protocol  |               Source Object               |    C Type    |
++-----------------------------+-----+-----+------------+-------------------------------------------+--------------+
+|ap_clk                       |  in |    1| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|ap_rst                       |  in |    1| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|ap_start                     |  in |    1| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|ap_done                      | out |    1| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|ap_continue                  |  in |    1| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|ap_idle                      | out |    1| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|ap_ready                     | out |    1| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|ap_return                    | out |   64| ap_ctrl_hs | math_accel_Block__ZrsILi32ELb0EE11ap_int_ | return value |
+|in_stream_TDATA              |  in |   32|    axis    |             in_stream_V_data_V            |    pointer   |
+|in_stream_TVALID             |  in |    1|    axis    |             in_stream_V_data_V            |    pointer   |
+|in_stream_TREADY             | out |    1|    axis    |             in_stream_V_dest_V            |    pointer   |
+|in_stream_TDEST              |  in |    1|    axis    |             in_stream_V_dest_V            |    pointer   |
+|in_stream_TKEEP              |  in |    4|    axis    |             in_stream_V_keep_V            |    pointer   |
+|in_stream_TSTRB              |  in |    4|    axis    |             in_stream_V_strb_V            |    pointer   |
+|in_stream_TUSER              |  in |    1|    axis    |             in_stream_V_user_V            |    pointer   |
+|in_stream_TLAST              |  in |    1|    axis    |             in_stream_V_last_V            |    pointer   |
+|in_stream_TID                |  in |    1|    axis    |              in_stream_V_id_V             |    pointer   |
+|tmp_last_V_2_out_out_din     | out |    1|   ap_fifo  |            tmp_last_V_2_out_out           |    pointer   |
+|tmp_last_V_2_out_out_full_n  |  in |    1|   ap_fifo  |            tmp_last_V_2_out_out           |    pointer   |
+|tmp_last_V_2_out_out_write   | out |    1|   ap_fifo  |            tmp_last_V_2_out_out           |    pointer   |
++-----------------------------+-----+-----+------------+-------------------------------------------+--------------+
+

@@ -1,0 +1,119 @@
+
+
+================================================================
+== Vivado HLS Report for 'math_accel_Block_ZrsILi32ELb0EE11ap_int_1'
+================================================================
+* Date:           Sun Sep  4 20:47:50 2016
+
+* Version:        2016.2 (Build 1577090 on Thu Jun 02 16:59:10 MDT 2016)
+* Project:        math_accel
+* Solution:       solution1
+* Product family: zynq
+* Target device:  xc7z010clg400-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  20.00|      1.66|        2.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |    0|    0|    0|    0|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 0
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states: 1
+* Pipeline: 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+* FSM state operations: 
+
+ <State 1>: 1.66ns
+ST_1: stg_2 [1/1] 0.00ns
+entry:0  call void (...)* @_ssdm_op_SpecInterface(i1* %out_stream_V_dest_V, i1* %out_stream_V_id_V, i1* %out_stream_V_last_V, i1* %out_stream_V_user_V, i4* %out_stream_V_strb_V, i4* %out_stream_V_keep_V, i32* %out_stream_V_data_V, [5 x i8]* @p_str1804, i32 0, i32 0, i32 0, i32 0, [14 x i8]* @p_str1807, [1 x i8]* @p_str1806, [1 x i8]* @p_str1806, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1806)
+
+ST_1: tmp_data_V [1/1] 0.00ns
+entry:1  %tmp_data_V = call i32 @_ssdm_op_Read.ap_auto.volatile.i32P(i32* %sqrt_res)
+
+ST_1: stg_4 [1/1] 0.00ns
+entry:2  call void (...)* @_ssdm_op_SpecInterface(i1* %tmp_last_V_2_reload, [8 x i8]* @ap_fifo_str, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str, [1 x i8]* @p_str, [1 x i8]* @p_str, i32 2, i32 2, i32 16, i32 16, [1 x i8]* @p_str)
+
+ST_1: tmp_last_V [1/1] 1.66ns
+entry:3  %tmp_last_V = call i1 @_ssdm_op_Read.ap_fifo.i1P(i1* %tmp_last_V_2_reload)
+
+ST_1: stg_6 [1/1] 0.00ns
+entry:4  call void @_ssdm_op_Write.axis.volatile.i32P.i4P.i4P.i1P.i1P.i1P.i1P(i32* %out_stream_V_data_V, i4* %out_stream_V_keep_V, i4* %out_stream_V_strb_V, i1* %out_stream_V_user_V, i1* %out_stream_V_last_V, i1* %out_stream_V_id_V, i1* %out_stream_V_dest_V, i32 %tmp_data_V, i4 -1, i4 undef, i1 undef, i1 %tmp_last_V, i1 undef, i1 undef)
+
+ST_1: stg_7 [1/1] 0.00ns
+entry:5  ret void
+
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 20ns, clock uncertainty: 2.5ns.
+
+ No timing violations. 
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

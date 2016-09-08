@@ -1,0 +1,201 @@
+
+
+================================================================
+== Vivado HLS Report for 'math_accel'
+================================================================
+* Date:           Sun Sep  4 20:47:50 2016
+
+* Version:        2016.2 (Build 1577090 on Thu Jun 02 16:59:10 MDT 2016)
+* Project:        math_accel
+* Solution:       solution1
+* Product family: zynq
+* Target device:  xc7z010clg400-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  20.00|     16.41|        2.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+----------+
+    |  Latency  |  Interval | Pipeline |
+    | min | max | min | max |   Type   |
+    +-----+-----+-----+-----+----------+
+    |   20|   20|   21|   21| dataflow |
+    +-----+-----+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states: 4
+* Pipeline: 0
+* Dataflow Pipeline: 1
+  DF-Pipeline-0: Size = 4, States = { 1 2 3 4 }
+
+* FSM state transitions: 
+1 --> 
+	2  / true
+2 --> 
+	3  / true
+3 --> 
+	4  / true
+4 --> 
+* FSM state operations: 
+
+ <State 1>: 9.40ns
+ST_1: p_channel [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:0  %p_channel = alloca i32, align 4
+
+ST_1: tmp_last_V_2_loc_channel [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:1  %tmp_last_V_2_loc_channel = alloca i1, align 1
+
+ST_1: tmp_4_loc_channel [2/2] 9.40ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:23  %tmp_4_loc_channel = call fastcc double @math_accel_Block__ZrsILi32ELb0EE11ap_int_(i32* %input_stream_V_data_V, i4* %input_stream_V_keep_V, i4* %input_stream_V_strb_V, i1* %input_stream_V_user_V, i1* %input_stream_V_last_V, i1* %input_stream_V_id_V, i1* %input_stream_V_dest_V, i1* %tmp_last_V_2_loc_channel)
+
+
+ <State 2>: 14.94ns
+ST_2: tmp_4_loc_channel [1/2] 14.94ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:23  %tmp_4_loc_channel = call fastcc double @math_accel_Block__ZrsILi32ELb0EE11ap_int_(i32* %input_stream_V_data_V, i4* %input_stream_V_keep_V, i4* %input_stream_V_strb_V, i1* %input_stream_V_user_V, i1* %input_stream_V_last_V, i1* %input_stream_V_id_V, i1* %input_stream_V_dest_V, i1* %tmp_last_V_2_loc_channel)
+
+
+ <State 3>: 6.77ns
+ST_3: stg_9 [1/1] 6.77ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:24  call fastcc void @math_accel___hls_fptoui_double_i321(i32* %p_channel, double %tmp_4_loc_channel)
+
+
+ <State 4>: 0.00ns
+ST_4: stg_10 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:2  call void (...)* @_ssdm_op_SpecDataflowPipeline(i32 -1, [1 x i8]* @p_str1806) nounwind
+
+ST_4: stg_11 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:3  call void (...)* @_ssdm_op_SpecBitsMap(i32* %input_stream_V_data_V), !map !93
+
+ST_4: stg_12 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:4  call void (...)* @_ssdm_op_SpecBitsMap(i4* %input_stream_V_keep_V), !map !99
+
+ST_4: stg_13 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:5  call void (...)* @_ssdm_op_SpecBitsMap(i4* %input_stream_V_strb_V), !map !103
+
+ST_4: stg_14 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:6  call void (...)* @_ssdm_op_SpecBitsMap(i1* %input_stream_V_user_V), !map !107
+
+ST_4: stg_15 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:7  call void (...)* @_ssdm_op_SpecBitsMap(i1* %input_stream_V_last_V), !map !111
+
+ST_4: stg_16 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:8  call void (...)* @_ssdm_op_SpecBitsMap(i1* %input_stream_V_id_V), !map !115
+
+ST_4: stg_17 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:9  call void (...)* @_ssdm_op_SpecBitsMap(i1* %input_stream_V_dest_V), !map !119
+
+ST_4: stg_18 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:10  call void (...)* @_ssdm_op_SpecBitsMap(i32* %output_stream_V_data_V), !map !123
+
+ST_4: stg_19 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:11  call void (...)* @_ssdm_op_SpecBitsMap(i4* %output_stream_V_keep_V), !map !127
+
+ST_4: stg_20 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:12  call void (...)* @_ssdm_op_SpecBitsMap(i4* %output_stream_V_strb_V), !map !131
+
+ST_4: stg_21 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:13  call void (...)* @_ssdm_op_SpecBitsMap(i1* %output_stream_V_user_V), !map !135
+
+ST_4: stg_22 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:14  call void (...)* @_ssdm_op_SpecBitsMap(i1* %output_stream_V_last_V), !map !139
+
+ST_4: stg_23 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:15  call void (...)* @_ssdm_op_SpecBitsMap(i1* %output_stream_V_id_V), !map !143
+
+ST_4: stg_24 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:16  call void (...)* @_ssdm_op_SpecBitsMap(i1* %output_stream_V_dest_V), !map !147
+
+ST_4: stg_25 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:17  call void (...)* @_ssdm_op_SpecTopModule([11 x i8]* @math_accel_str) nounwind
+
+ST_4: stg_26 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:18  call void (...)* @_ssdm_op_SpecInterface(i32* %input_stream_V_data_V, i4* %input_stream_V_keep_V, i4* %input_stream_V_strb_V, i1* %input_stream_V_user_V, i1* %input_stream_V_last_V, i1* %input_stream_V_id_V, i1* %input_stream_V_dest_V, [5 x i8]* @p_str1804, i32 0, i32 0, i32 0, i32 0, [13 x i8]* @p_str1805, [1 x i8]* @p_str1806, [1 x i8]* @p_str1806, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1806) nounwind
+
+ST_4: stg_27 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:19  call void (...)* @_ssdm_op_SpecInterface(i32* %output_stream_V_data_V, i4* %output_stream_V_keep_V, i4* %output_stream_V_strb_V, i1* %output_stream_V_user_V, i1* %output_stream_V_last_V, i1* %output_stream_V_id_V, i1* %output_stream_V_dest_V, [5 x i8]* @p_str1804, i32 0, i32 0, i32 0, i32 0, [14 x i8]* @p_str1807, [1 x i8]* @p_str1806, [1 x i8]* @p_str1806, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1806) nounwind
+
+ST_4: stg_28 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:20  call void (...)* @_ssdm_op_SpecInterface(i32 0, [10 x i8]* @p_str1808, i32 0, i32 0, i32 0, i32 0, [13 x i8]* @p_str1809, [1 x i8]* @p_str1806, [1 x i8]* @p_str1806, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1806) nounwind
+
+ST_4: empty [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:21  %empty = call i32 (...)* @_ssdm_op_SpecChannel([25 x i8]* @tmp_OC_last_OC_V_OC_2_OC_loc_c, i32 1, [1 x i8]* @p_str, [1 x i8]* @p_str, i32 2, i32 0, i1* %tmp_last_V_2_loc_channel, i1* %tmp_last_V_2_loc_channel)
+
+ST_4: stg_30 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:22  call void (...)* @_ssdm_op_SpecInterface(i1* %tmp_last_V_2_loc_channel, [8 x i8]* @ap_fifo_str, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str, [1 x i8]* @p_str, [1 x i8]* @p_str, i32 2, i32 2, i32 16, i32 16, [1 x i8]* @p_str)
+
+ST_4: stg_31 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:25  call fastcc void @math_accel_Block__ZrsILi32ELb0EE11ap_int_.1(i32* %p_channel, i1* nocapture %tmp_last_V_2_loc_channel, i32* %output_stream_V_data_V, i4* %output_stream_V_keep_V, i4* %output_stream_V_strb_V, i1* %output_stream_V_user_V, i1* %output_stream_V_last_V, i1* %output_stream_V_id_V, i1* %output_stream_V_dest_V)
+
+ST_4: stg_32 [1/1] 0.00ns
+_ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:26  ret void
+
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 20ns, clock uncertainty: 2.5ns.
+
+ No timing violations. 
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

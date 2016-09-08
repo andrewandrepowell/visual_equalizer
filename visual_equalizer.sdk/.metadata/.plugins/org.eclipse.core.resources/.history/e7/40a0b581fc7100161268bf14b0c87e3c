@@ -1,0 +1,79 @@
+#ifndef MAT_H_
+#define MAT_H_
+
+#include <stdio.h>
+#include <stdint.h>
+
+namespace la
+{
+	template <typename TYPE_,int SIZE_>
+	class pixel
+	{
+	public:
+		pixel() { }
+		pixel( TYPE_ val0 )
+		{
+			data[ 0 ] = val0;
+		}
+		pixel( TYPE_ val0, TYPE_ val1 )
+		{
+			data[ 0 ] = val0; data[ 1 ] = val1;
+		}
+		pixel( TYPE_ val0, TYPE_ val1, TYPE_ val2 )
+		{
+			data[ 0 ] = val0; data[ 1 ] = val1; data[ 2 ] = val2;
+		}
+		pixel( TYPE_ val0, TYPE_ val1, TYPE_ val2, TYPE_ val3 )
+		{
+			data[ 0 ] = val0; data[ 1 ] = val1; data[ 2 ] = val2; data[ 3 ] = val3;
+		}
+		pixel( const TYPE_* data )
+		{
+			for ( int each_ch=0; each_ch<SIZE_; each_ch++ )
+				this->data[ each_ch ] = data[ each_ch ];
+		}
+		const pixel& operator=( const pixel& ref )
+		{
+			for ( int each_ch=0; each_ch<SIZE_; each_ch++ )
+				data[ each_ch ] = ref.data[ each_ch ];
+			return ref;
+		}
+		pixel( const pixel& ref ) { *this = ref; }
+		~pixel() { }
+		TYPE_* get() { data; }
+	private:
+		TYPE_ data[ SIZE_ ];
+	};
+
+	template <typename TYPE_,int ROWS_,int COLS_,int STRIDE_>
+	class mat
+	{
+	public:
+		mat() { }
+		~mat() { }
+		TYPE_* get() { return data; }
+		TYPE_* get( int row ) {	return reinterpret_cast<TYPE_*>(reinterpret_cast<uint8_t*>(data)+STRIDE_*row); }
+		TYPE_& get( int row, int col ) { return *(get( row )+col); }
+	private:
+		TYPE_ data[ STRIDE_*ROWS_ ];
+	};
+
+	template <typename TYPE_,int ROWS0_,int COLS0_,int ROWS1_,int COLS1_,int STRIDE_>
+	mat<TYPE_,ROWS1_,COLS1_,STRIDE_>& getroi( const mat<TYPE_,ROWS0_,COLS0_,STRIDE_>& mat0, int row, int col )
+	{
+		return *(reinterpret_cast<TYPE_*>(reinterpret_cast<uint8_t*>(&mat0)+STRIDE_*row)+col);
+	}
+
+	template <typename TYPE_,int ROWS_,int COLS_,int STRIDE_>
+	void fill( mat<TYPE_,ROWS_,COLS_,STRIDE_>& mat, TYPE_ pixel )
+	{
+		for ( int row=0; row<ROWS_; row++ )
+		{
+			TYPE_* rowptr = mat.get( row );
+			for ( int col=0; col<COLS_; col++ )
+				rowptr[ col ] = pixel;
+		}
+	}
+};
+
+#endif

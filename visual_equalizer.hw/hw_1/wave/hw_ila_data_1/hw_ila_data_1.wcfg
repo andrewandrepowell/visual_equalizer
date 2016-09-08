@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.hw/hw_1/wave/hw_ila_data_1/hw_ila_data_1.wdb" id="1">
+         <top_modules>
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="78001fs"></ZoomEndTime>
+      <Cursor1Time time="13000fs"></Cursor1Time>
+   </zoom_setting>
+   <WVObjectSize size="12" />
+   <wave_markers>
+   </wave_markers>
+   <wvobject type="logic" fp_name="block_design_i/xfft_0_event_data_in_channel_halt">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">block_design_i/xfft_0_event_data_in_channel_halt</obj_property>
+      <obj_property name="ObjectShortName">xfft_0_event_data_in_channel_halt</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="block_design_i/xfft_0_event_data_out_channel_halt">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">block_design_i/xfft_0_event_data_out_channel_halt</obj_property>
+      <obj_property name="ObjectShortName">xfft_0_event_data_out_channel_halt</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="block_design_i/xfft_0_event_frame_started">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">block_design_i/xfft_0_event_frame_started</obj_property>
+      <obj_property name="ObjectShortName">xfft_0_event_frame_started</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="block_design_i/xfft_0_event_tlast_missing">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">block_design_i/xfft_0_event_tlast_missing</obj_property>
+      <obj_property name="ObjectShortName">xfft_0_event_tlast_missing</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="block_design_i/xfft_0_event_tlast_unexpected">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">block_design_i/xfft_0_event_tlast_unexpected</obj_property>
+      <obj_property name="ObjectShortName">xfft_0_event_tlast_unexpected</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="u_ila_0_axi_dma_0_M_AXIS_MM2S_TLAST">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">u_ila_0_axi_dma_0_M_AXIS_MM2S_TLAST</obj_property>
+      <obj_property name="ObjectShortName">u_ila_0_axi_dma_0_M_AXIS_MM2S_TLAST</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="u_ila_0_axi_dma_0_M_AXIS_MM2S_TREADY">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">u_ila_0_axi_dma_0_M_AXIS_MM2S_TREADY</obj_property>
+      <obj_property name="ObjectShortName">u_ila_0_axi_dma_0_M_AXIS_MM2S_TREADY</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="u_ila_0_axi_dma_0_M_AXIS_MM2S_TVALID">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">u_ila_0_axi_dma_0_M_AXIS_MM2S_TVALID</obj_property>
+      <obj_property name="ObjectShortName">u_ila_0_axi_dma_0_M_AXIS_MM2S_TVALID</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="u_ila_0_xfft_0_M_AXIS_DATA_TLAST">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">u_ila_0_xfft_0_M_AXIS_DATA_TLAST</obj_property>
+      <obj_property name="ObjectShortName">u_ila_0_xfft_0_M_AXIS_DATA_TLAST</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="u_ila_0_xfft_0_M_AXIS_DATA_TREADY">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">u_ila_0_xfft_0_M_AXIS_DATA_TREADY</obj_property>
+      <obj_property name="ObjectShortName">u_ila_0_xfft_0_M_AXIS_DATA_TREADY</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="u_ila_0_xfft_0_M_AXIS_DATA_TVALID">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">u_ila_0_xfft_0_M_AXIS_DATA_TVALID</obj_property>
+      <obj_property name="ObjectShortName">u_ila_0_xfft_0_M_AXIS_DATA_TVALID</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="u_ila_0_xfft_0_event_status_channel_halt">
+      <obj_property name="DisplayName">FullPathName</obj_property>
+      <obj_property name="ElementShortName">u_ila_0_xfft_0_event_status_channel_halt</obj_property>
+      <obj_property name="ObjectShortName">u_ila_0_xfft_0_event_status_channel_halt</obj_property>
+      <obj_property name="LABELRADIX">true</obj_property>
+   </wvobject>
+</wave_config>

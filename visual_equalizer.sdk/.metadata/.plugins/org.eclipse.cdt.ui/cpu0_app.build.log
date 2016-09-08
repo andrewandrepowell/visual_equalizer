@@ -1,0 +1,33 @@
+21:14:57 **** Auto Build of configuration Debug for project cpu0_app ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+ 
+Building file: ../src/main.cc
+Invoking: ARM v7 g++ compiler
+arm-none-eabi-g++ -Wall -O2 -I"/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/shared" -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../cpu0_app_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.cc"
+In file included from ../../cpu0_app_bsp/ps7_cortexa9_0/include/xstatus.h:53:0,
+                 from ../../cpu0_app_bsp/ps7_cortexa9_0/include/xscugic.h:162,
+                 from ../src/main.cc:7:
+../../cpu0_app_bsp/ps7_cortexa9_0/include/xil_assert.h: In function ‘void audio_i2c_trans_def(audio_dir, uint8_t, uint8_t*, size_t, void*)’:
+../../cpu0_app_bsp/ps7_cortexa9_0/include/xil_assert.h:99:5: warning: ‘Status’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+     if (Expression) {                              \
+     ^
+../src/main.cc:450:6: note: ‘Status’ was declared here
+  int Status;
+      ^
+Finished building: ../src/main.cc
+ 
+Building target: cpu0_app.elf
+Invoking: ARM v7 g++ linker
+arm-none-eabi-g++ -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../cpu0_app_bsp/ps7_cortexa9_0/lib -o "cpu0_app.elf"  ./src/audio.o ./src/main.o ./src/shared.o   -Wl,--start-group,-lxil,-lgcc,-lc,-lstdc++,--end-group
+Finished building target: cpu0_app.elf
+ 
+Invoking: ARM v7 Print Size
+arm-none-eabi-size cpu0_app.elf  |tee "cpu0_app.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  60496	   3952	  27008	  91456	  16540	cpu0_app.elf
+Finished building: cpu0_app.elf.size
+ 
+
+21:14:57 Build Finished (took 281ms)
+

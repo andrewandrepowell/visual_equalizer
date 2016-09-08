@@ -1,0 +1,160 @@
+
+
+================================================================
+== Vivado HLS Report for 'math_accel'
+================================================================
+* Date:           Sun Sep  4 20:47:50 2016
+
+* Version:        2016.2 (Build 1577090 on Thu Jun 02 16:59:10 MDT 2016)
+* Project:        math_accel
+* Solution:       solution1
+* Product family: zynq
+* Target device:  xc7z010clg400-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  20.00|     16.41|        2.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+----------+
+    |  Latency  |  Interval | Pipeline |
+    | min | max | min | max |   Type   |
+    +-----+-----+-----+-----+----------+
+    |   20|   20|   21|   21| dataflow |
+    +-----+-----+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------------------------------------+-------------------------------------------+-----+-----+-----+-----+---------+
+        |                                                         |                                           |  Latency  |  Interval | Pipeline|
+        |                         Instance                        |                   Module                  | min | max | min | max |   Type  |
+        +---------------------------------------------------------+-------------------------------------------+-----+-----+-----+-----+---------+
+        |grp_math_accel_Block_ZrsILi32ELb0EE11ap_int_s_fu_84      |math_accel_Block_ZrsILi32ELb0EE11ap_int_s  |   20|   20|   20|   20|   none  |
+        |stg_9_math_accel_hls_fptoui_double_i321_fu_103           |math_accel_hls_fptoui_double_i321          |    0|    0|    0|    0|   none  |
+        |stg_31_math_accel_Block_ZrsILi32ELb0EE11ap_int_1_fu_109  |math_accel_Block_ZrsILi32ELb0EE11ap_int_1  |    0|    0|    0|    0|   none  |
+        +---------------------------------------------------------+-------------------------------------------+-----+-----+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+-------+-------+
+|       Name      | BRAM_18K| DSP48E|   FF  |  LUT  |
++-----------------+---------+-------+-------+-------+
+|DSP              |        -|      -|      -|      -|
+|Expression       |        -|      -|      -|      -|
+|FIFO             |        0|      -|     10|     60|
+|Instance         |        0|      2|   1494|   3254|
+|Memory           |        -|      -|      -|      -|
+|Multiplexer      |        -|      -|      -|      -|
+|Register         |        -|      -|      -|      -|
++-----------------+---------+-------+-------+-------+
+|Total            |        0|      2|   1504|   3314|
++-----------------+---------+-------+-------+-------+
+|Available        |      120|     80|  35200|  17600|
++-----------------+---------+-------+-------+-------+
+|Utilization (%)  |        0|      2|      4|     18|
++-----------------+---------+-------+-------+-------+
+
++ Detail: 
+    * Instance: 
+    +----------------------------------------------+-------------------------------------------+---------+-------+------+------+
+    |                   Instance                   |                   Module                  | BRAM_18K| DSP48E|  FF  |  LUT |
+    +----------------------------------------------+-------------------------------------------+---------+-------+------+------+
+    |math_accel_Block_ZrsILi32ELb0EE11ap_int_1_U0  |math_accel_Block_ZrsILi32ELb0EE11ap_int_1  |        0|      0|     3|     4|
+    |math_accel_Block_ZrsILi32ELb0EE11ap_int_U0    |math_accel_Block_ZrsILi32ELb0EE11ap_int_s  |        0|      2|  1421|  2694|
+    |math_accel_control_intr_s_axi_U               |math_accel_control_intr_s_axi              |        0|      0|    36|    40|
+    |math_accel_hls_fptoui_double_i321_U0          |math_accel_hls_fptoui_double_i321          |        0|      0|    34|   516|
+    +----------------------------------------------+-------------------------------------------+---------+-------+------+------+
+    |Total                                         |                                           |        0|      2|  1494|  3254|
+    +----------------------------------------------+-------------------------------------------+---------+-------+------+------+
+
+    * DSP48: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +----------------------------+---------+---+----+------+-----+---------+
+    |            Name            | BRAM_18K| FF| LUT| Depth| Bits| Size:D*B|
+    +----------------------------+---------+---+----+------+-----+---------+
+    |p_channel_U                 |        0|  5|  44|     2|   32|       64|
+    |tmp_4_loc_channel_U         |        0|  0|   0|     2|   64|      128|
+    |tmp_last_V_2_loc_channel_U  |        0|  5|  16|     2|    1|        2|
+    +----------------------------+---------+---+----+------+-----+---------+
+    |Total                       |        0| 10|  60|     6|   97|      194|
+    +----------------------------+---------+---+----+------+-----+---------+
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------+-----+-----+------------+------------------------+--------------+
+|          RTL Ports         | Dir | Bits|  Protocol  |      Source Object     |    C Type    |
++----------------------------+-----+-----+------------+------------------------+--------------+
+|s_axi_control_intr_AWVALID  |  in |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_AWREADY  | out |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_AWADDR   |  in |    4|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_WVALID   |  in |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_WREADY   | out |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_WDATA    |  in |   32|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_WSTRB    |  in |    4|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_ARVALID  |  in |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_ARREADY  | out |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_ARADDR   |  in |    4|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_RVALID   | out |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_RREADY   |  in |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_RDATA    | out |   32|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_RRESP    | out |    2|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_BVALID   | out |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_BREADY   |  in |    1|    s_axi   |      control_intr      |  return void |
+|s_axi_control_intr_BRESP    | out |    2|    s_axi   |      control_intr      |  return void |
+|ap_clk                      |  in |    1| ap_ctrl_hs |       math_accel       | return value |
+|ap_rst_n                    |  in |    1| ap_ctrl_hs |       math_accel       | return value |
+|interrupt                   | out |    1| ap_ctrl_hs |       math_accel       | return value |
+|in_stream_TDATA             |  in |   32|    axis    |  input_stream_V_data_V |    pointer   |
+|in_stream_TKEEP             |  in |    4|    axis    |  input_stream_V_keep_V |    pointer   |
+|in_stream_TSTRB             |  in |    4|    axis    |  input_stream_V_strb_V |    pointer   |
+|in_stream_TUSER             |  in |    1|    axis    |  input_stream_V_user_V |    pointer   |
+|in_stream_TLAST             |  in |    1|    axis    |  input_stream_V_last_V |    pointer   |
+|in_stream_TID               |  in |    1|    axis    |   input_stream_V_id_V  |    pointer   |
+|in_stream_TDEST             |  in |    1|    axis    |  input_stream_V_dest_V |    pointer   |
+|in_stream_TVALID            |  in |    1|    axis    |  input_stream_V_dest_V |    pointer   |
+|in_stream_TREADY            | out |    1|    axis    |  input_stream_V_dest_V |    pointer   |
+|out_stream_TDATA            | out |   32|    axis    | output_stream_V_data_V |    pointer   |
+|out_stream_TKEEP            | out |    4|    axis    | output_stream_V_keep_V |    pointer   |
+|out_stream_TSTRB            | out |    4|    axis    | output_stream_V_strb_V |    pointer   |
+|out_stream_TUSER            | out |    1|    axis    | output_stream_V_user_V |    pointer   |
+|out_stream_TLAST            | out |    1|    axis    | output_stream_V_last_V |    pointer   |
+|out_stream_TID              | out |    1|    axis    |  output_stream_V_id_V  |    pointer   |
+|out_stream_TDEST            | out |    1|    axis    | output_stream_V_dest_V |    pointer   |
+|out_stream_TVALID           | out |    1|    axis    | output_stream_V_dest_V |    pointer   |
+|out_stream_TREADY           |  in |    1|    axis    | output_stream_V_dest_V |    pointer   |
++----------------------------+-----+-----+------------+------------------------+--------------+
+

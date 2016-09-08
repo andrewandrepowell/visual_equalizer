@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Memory>
+<Block Addr="0" Context="JTAG-jsn-Zybo-210279759071A-4ba00477-0.0" Size="-1"/>
+<Block Addr="0xfffffff0" Context="JTAG-jsn-Zybo-210279759071A-4ba00477-0.0" Size="-1"/>
+<Block Addr="0" Context="JTAG-jsn-Zybo-210279759071A-4ba00477-0.1" Size="-1"/>
+<Block Addr="0x22d420" Context="JTAG-jsn-Zybo-210279759071A-4ba00477-0.1" Size="-1"/>
+</Memory>

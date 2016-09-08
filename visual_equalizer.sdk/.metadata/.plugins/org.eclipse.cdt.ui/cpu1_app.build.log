@@ -1,0 +1,23 @@
+21:12:33 **** Auto Build of configuration Debug for project cpu1_app ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+ 
+Building file: ../src/main.cc
+Invoking: ARM v7 g++ compiler
+arm-none-eabi-g++ -D_POSIX_SOURCE -Wall -O2 -g3 -I/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/OpenCV/include -I"/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/shared" -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../cpu1_app_bsp/ps7_cortexa9_1/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.cc"
+Finished building: ../src/main.cc
+ 
+Building target: cpu1_app.elf
+Invoking: ARM v7 g++ linker
+arm-none-eabi-g++ -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../cpu1_app_bsp/ps7_cortexa9_1/lib -o "cpu1_app.elf"  ./src/display_ctrl.o ./src/main.o ./src/shared.o   -Wl,--start-group,-lxil,-lgcc,-lc,-lstdc++,--end-group
+Finished building target: cpu1_app.elf
+ 
+Invoking: ARM v7 Print Size
+arm-none-eabi-size cpu1_app.elf  |tee "cpu1_app.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 161768	   4440	  32560	 198768	  30870	cpu1_app.elf
+Finished building: cpu1_app.elf.size
+ 
+
+21:12:34 Build Finished (took 717ms)
+

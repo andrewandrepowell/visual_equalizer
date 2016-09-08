@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/cpu1_app/Debug" key="dump_restore_files_selection"/>
+	<item value="/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/fsbl/bootimage" key="bootgen_files_selection"/>
+	<item value="/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/fsbl/bootimage" key="zynq_flash_files_selection"/>
+	<item value="/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/fsbl/bootimage" key="last_stored_selection"/>
+</section>

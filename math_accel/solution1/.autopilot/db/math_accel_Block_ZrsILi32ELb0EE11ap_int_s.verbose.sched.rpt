@@ -1,0 +1,303 @@
+
+
+================================================================
+== Vivado HLS Report for 'math_accel_Block_ZrsILi32ELb0EE11ap_int_s'
+================================================================
+* Date:           Sun Sep  4 20:47:50 2016
+
+* Version:        2016.2 (Build 1577090 on Thu Jun 02 16:59:10 MDT 2016)
+* Project:        math_accel
+* Solution:       solution1
+* Product family: zynq
+* Target device:  xc7z010clg400-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  20.00|     16.41|        2.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |   20|   20|   20|   20|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states: 21
+* Pipeline: 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+	2  / true
+2 --> 
+	3  / true
+3 --> 
+	4  / true
+4 --> 
+	5  / true
+5 --> 
+	6  / true
+6 --> 
+	7  / true
+7 --> 
+	8  / true
+8 --> 
+	9  / true
+9 --> 
+	10  / true
+10 --> 
+	11  / true
+11 --> 
+	12  / true
+12 --> 
+	13  / true
+13 --> 
+	14  / true
+14 --> 
+	15  / true
+15 --> 
+	16  / true
+16 --> 
+	17  / true
+17 --> 
+	18  / true
+18 --> 
+	19  / true
+19 --> 
+	20  / true
+20 --> 
+	21  / true
+21 --> 
+* FSM state operations: 
+
+ <State 1>: 9.40ns
+ST_1: empty [1/1] 0.00ns
+entry:2  %empty = call { i32, i4, i4, i1, i1, i1, i1 } @_ssdm_op_Read.axis.volatile.i32P.i4P.i4P.i1P.i1P.i1P.i1P(i32* %in_stream_V_data_V, i4* %in_stream_V_keep_V, i4* %in_stream_V_strb_V, i1* %in_stream_V_user_V, i1* %in_stream_V_last_V, i1* %in_stream_V_id_V, i1* %in_stream_V_dest_V)
+
+ST_1: tmp_data_V [1/1] 0.00ns
+entry:3  %tmp_data_V = extractvalue { i32, i4, i4, i1, i1, i1, i1 } %empty, 0
+
+ST_1: tmp_last_V [1/1] 0.00ns
+entry:4  %tmp_last_V = extractvalue { i32, i4, i4, i1, i1, i1, i1 } %empty, 4
+
+ST_1: real_1 [1/1] 0.00ns
+entry:5  %real_1 = trunc i32 %tmp_data_V to i16
+
+ST_1: real32 [1/1] 0.00ns
+entry:6  %real32 = sext i16 %real_1 to i32
+
+ST_1: tmp_1_i [1/1] 6.38ns
+entry:7  %tmp_1_i = mul nsw i32 %real32, %real32
+
+ST_1: img [1/1] 0.00ns
+entry:8  %img = call i16 @_ssdm_op_PartSelect.i16.i32.i32.i32(i32 %tmp_data_V, i32 16, i32 31)
+
+ST_1: img32 [1/1] 0.00ns
+entry:9  %img32 = sext i16 %img to i32
+
+ST_1: tmp_2_i [1/1] 3.36ns
+entry:10  %tmp_2_i = mul nsw i32 %img32, %img32
+
+ST_1: squared_sum [1/1] 3.02ns
+entry:11  %squared_sum = add nsw i32 %tmp_1_i, %tmp_2_i
+
+ST_1: stg_32 [1/1] 1.66ns
+entry:14  call void @_ssdm_op_Write.ap_fifo.i1P(i1* %tmp_last_V_2_out_out, i1 %tmp_last_V)
+
+
+ <State 2>: 16.41ns
+ST_2: tmp_3_i [3/3] 16.41ns
+entry:12  %tmp_3_i = uitofp i32 %squared_sum to double
+
+
+ <State 3>: 16.41ns
+ST_3: tmp_3_i [2/3] 16.41ns
+entry:12  %tmp_3_i = uitofp i32 %squared_sum to double
+
+
+ <State 4>: 16.41ns
+ST_4: tmp_3_i [1/3] 16.41ns
+entry:12  %tmp_3_i = uitofp i32 %squared_sum to double
+
+
+ <State 5>: 14.94ns
+ST_5: tmp_4_out [17/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 6>: 14.94ns
+ST_6: tmp_4_out [16/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 7>: 14.94ns
+ST_7: tmp_4_out [15/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 8>: 14.94ns
+ST_8: tmp_4_out [14/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 9>: 14.94ns
+ST_9: tmp_4_out [13/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 10>: 14.94ns
+ST_10: tmp_4_out [12/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 11>: 14.94ns
+ST_11: tmp_4_out [11/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 12>: 14.94ns
+ST_12: tmp_4_out [10/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 13>: 14.94ns
+ST_13: tmp_4_out [9/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 14>: 14.94ns
+ST_14: tmp_4_out [8/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 15>: 14.94ns
+ST_15: tmp_4_out [7/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 16>: 14.94ns
+ST_16: tmp_4_out [6/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 17>: 14.94ns
+ST_17: tmp_4_out [5/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 18>: 14.94ns
+ST_18: tmp_4_out [4/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 19>: 14.94ns
+ST_19: tmp_4_out [3/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 20>: 14.94ns
+ST_20: tmp_4_out [2/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+
+ <State 21>: 14.94ns
+ST_21: stg_52 [1/1] 0.00ns
+entry:0  call void (...)* @_ssdm_op_SpecInterface(i1* %in_stream_V_dest_V, i1* %in_stream_V_id_V, i1* %in_stream_V_last_V, i1* %in_stream_V_user_V, i4* %in_stream_V_strb_V, i4* %in_stream_V_keep_V, i32* %in_stream_V_data_V, [5 x i8]* @p_str1804, i32 0, i32 0, i32 0, i32 0, [13 x i8]* @p_str1805, [1 x i8]* @p_str1806, [1 x i8]* @p_str1806, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1806)
+
+ST_21: stg_53 [1/1] 0.00ns
+entry:1  call void (...)* @_ssdm_op_SpecInterface(i1* %tmp_last_V_2_out_out, [8 x i8]* @ap_fifo_str, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str, [1 x i8]* @p_str, [1 x i8]* @p_str, i32 2, i32 2, i32 16, i32 16, [1 x i8]* @p_str)
+
+ST_21: tmp_4_out [1/17] 14.94ns
+entry:13  %tmp_4_out = call double @llvm.sqrt.f64(double %tmp_3_i)
+
+ST_21: stg_55 [1/1] 0.00ns
+entry:15  ret double %tmp_4_out
+
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 20ns, clock uncertainty: 2.5ns.
+
+ No timing violations. 
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+	State 8
+	State 9
+	State 10
+	State 11
+	State 12
+	State 13
+	State 14
+	State 15
+	State 16
+	State 17
+	State 18
+	State 19
+	State 20
+	State 21
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

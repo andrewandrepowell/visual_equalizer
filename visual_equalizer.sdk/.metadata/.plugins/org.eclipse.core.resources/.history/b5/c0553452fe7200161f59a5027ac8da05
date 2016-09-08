@@ -1,0 +1,463 @@
+/*
+ * Whelp, it turned out the -O2 flag is absolutely necessary in
+ * order to get this app to run without problems lol.
+ */
+#include "xparameters.h"
+#include "xscugic.h"
+#include "xiicps.h"
+#include "xgpio.h"
+#include "xaxidma.h"
+#include "xmath_accel.h"
+#include "xil_exception.h"
+#include "xil_assert.h"
+#include "xil_io.h"
+#include "xil_printf.h"
+#include "xil_mmu.h"
+#include "xil_cache.h"
+#include "sleep.h"
+#include "audio.h"
+#include "shared.h"
+
+using namespace shared;
+
+#define INCT_DEVICE_ID					( XPAR_PS7_SCUGIC_0_DEVICE_ID )
+#define AUDIO_I2C_DEVICE_ID				( XPAR_PS7_I2C_0_DEVICE_ID )
+#define AUDIO_I2C_SCLK_RATE				( 100000 )
+#define AUDIO_I2C_MIC_SEL_MASK			( 1 << 2 )
+#define AUDIO_ADI_I2S_PHY_ADDR			( XPAR_AXI_I2S_ADI_0_S_AXI_BASEADDR )
+#define AUDIO_ADI_I2S_VOL_SHIFT   		( 0 )
+#define GPIO_UIO_DEVICE_ID				( XPAR_GPIO_1_DEVICE_ID )
+#define GPIO_UIO_INT_ID					( XPAR_FABRIC_AXI_GPIO_1_IP2INTC_IRPT_INTR )
+#define GPIO_UIO_USER_MIC_ENABLE		( 0b0001 )
+#define GPIO_UIO_USER_INC_VOL			( 0b0010 )
+#define GPIO_UIO_USER_DEC_VOL			( 0b0100 )
+#define FFT_CONFIG_VAL_SCALE_SCH		( 0b0000000000 ) /* bits are in pairs. */
+#define FFT_CONFIG_VAL_FWD_INV			( 1 )
+#define FFT_CONFIG_VAL_NFFT				( BUFFER_LOG2LEN )
+#define FFT_CONFIG_VAL					( (FFT_CONFIG_VAL_FWD_INV<<0) | (FFT_CONFIG_VAL_SCALE_SCH<<1) )
+#define FFT_CONFIG_DMA_DEVICE_ID		( XPAR_AXI_DMA_1_DEVICE_ID )
+#define FFT_CONFIG_DMA_MM2S_INT_ID		( XPAR_FABRIC_AXI_DMA_1_MM2S_INTROUT_INTR )
+#define FFT_PROCESS_DMA_DEVICE_ID		( XPAR_AXI_DMA_0_DEVICE_ID )
+#define FFT_PROCESS_DMA_MM2S_INT_ID		( XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR )
+#define FFT_PROCESS_DMA_S2MM_INT_ID		( XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR )
+#define FFT_MACCEL_DEVICE_ID			( XPAR_MATH_ACCEL_0_DEVICE_ID )
+#define CPU_1_START_REG					( 0xfffffff0 )
+#define CPU_1_START_ADDR				( 0x200000 )
+#define CPU_0_INT_ID					( 2 )
+#define CPU_1_DEVICE_ID					( 2 )
+
+XScuGic intc_obj;
+struct audio_struct
+{
+	audio adi_obj;
+	XIicPs i2c_obj;
+}
+audio_objs;
+struct uio_struct
+{
+	XGpio gpio_obj;
+	int vol_shift;
+}
+uio_objs;
+struct fft_struct
+{
+	XAxiDma config_dma_obj;
+	XAxiDma process_dma_obj;
+	volatile bool configdone;
+	XMath_accel maccel_obj;
+}
+fft_objs;
+struct cpu_struct
+{
+	volatile bool cpudone;
+}
+cpu_objs;
+
+void gpio_uio_handler( void* param );
+void fft_config_dma_mm2s_handler( void* param );
+void fft_process_dma_mm2s_handler( void* param );
+void fft_process_dma_s2mm_handler( void* param );
+void cpu_handler( void* param );
+
+u32 XAxiDma_GetStatus( XAxiDma *InstancePtr, int Direction );
+u32 XAxiDma_GetControl( XAxiDma *InstancePtr, int Direction );
+
+void audio_mem_access_def( audio_dir dir, uint32_t phy_addr, uint32_t* data, void* param );
+void audio_i2c_trans_def( audio_dir dir, uint8_t slave_addr, uint8_t* data, size_t len, void* param );
+void audio_i2c_delay_def( unsigned int ms, void* param );
+inline int32_t convert_sample( uint32_t sample ) { return static_cast<int32_t>( sample << 8 ) >> 8; }
+
+int main()
+{
+	/* Initialize the interrupt driver. */
+	xil_printf( "Initializing interrupt controller...\n\r" );
+	{
+		XScuGic_Config* config;
+		int Status;
+
+		config = XScuGic_LookupConfig( INCT_DEVICE_ID );
+		Xil_AssertNonvoid( config!=NULL );
+		Status = XScuGic_CfgInitialize( &intc_obj, config, config->CpuBaseAddress );
+		Xil_AssertNonvoid( Status==XST_SUCCESS );
+
+		/* The interrupt controller needs to be associated with the CPU's interrupt. */
+		Xil_ExceptionRegisterHandler( XIL_EXCEPTION_ID_IRQ_INT,
+				reinterpret_cast<Xil_ExceptionHandler>( XScuGic_InterruptHandler ),
+				 &intc_obj );
+	}
+
+	/* Initialize audio related drivers! */
+	{
+		/* Initialize the I2C driver! */
+		xil_printf( "Initializing I2C driver to access audio codec's I2C interface...\n\r" );
+		{
+			XIicPs_Config* config;
+			int Status;
+
+			config = XIicPs_LookupConfig( AUDIO_I2C_DEVICE_ID );
+			Xil_AssertNonvoid( config!=NULL );
+			Status = XIicPs_CfgInitialize( &audio_objs.i2c_obj, config, config->BaseAddress );
+			Xil_AssertNonvoid( Status==XST_SUCCESS );
+			XIicPs_SetSClk( &audio_objs.i2c_obj, AUDIO_I2C_SCLK_RATE );
+		}
+
+		/* Initialize the audio core itself! */
+		xil_printf( "Initializing ADI/I2C driver to access ADI core and I2C interface...\n\r" );
+		{
+			audio_setup( &audio_objs.adi_obj,
+					AUDIO_ADI_I2S_PHY_ADDR, audio_mem_access_def,
+					audio_i2c_trans_def, audio_i2c_delay_def, NULL );
+			audio_i2c_configure( &audio_objs.adi_obj, audio_src_LINE );
+		}
+	}
+
+	/* Initialize GPIO I/O driver for user I/O! */
+	xil_printf( "Initializing the GPIO core for user I/O...\n\r" );
+	{
+		int Status;
+
+		Status = XGpio_Initialize( &uio_objs.gpio_obj, GPIO_UIO_DEVICE_ID );
+		Xil_AssertNonvoid( Status==XST_SUCCESS );
+		XGpio_SetDataDirection( &uio_objs.gpio_obj, 1, 0b1111 ); /* Set channel 1 to input. */
+		XGpio_SetDataDirection( &uio_objs.gpio_obj, 2, 0b0000 ); /* Set channel 2 to output. */
+
+		/* Configure interrupts on the GPIO core. */
+		XGpio_InterruptGlobalEnable( &uio_objs.gpio_obj );
+		XGpio_InterruptEnable( &uio_objs.gpio_obj, 0b01 ); /* Only need to enable interrupts for channel 1. */
+
+		/* Associate interrupt request routine with interrupt controller. */
+		Status = XScuGic_Connect( &intc_obj, GPIO_UIO_INT_ID, gpio_uio_handler, NULL );
+		Xil_AssertNonvoid( Status==XST_SUCCESS );
+		XScuGic_Enable( &intc_obj, GPIO_UIO_INT_ID );
+
+		/* Initialize other uio-related variables. */
+		uio_objs.vol_shift = AUDIO_ADI_I2S_VOL_SHIFT;
+	}
+
+	/* Configure the drivers related to the fft operation. */
+	xil_printf( "Initializing drivers related to the fft operation...\n\r" );
+	{
+		/* Configure the DMA that handles transferring the configurations
+		to the fft core. */
+		{
+			int Status;
+			XAxiDma_Config* config;
+
+			config = XAxiDma_LookupConfig( FFT_CONFIG_DMA_DEVICE_ID );
+			Xil_AssertNonvoid( config!=NULL );
+			Status = XAxiDma_CfgInitialize( &fft_objs.config_dma_obj, config );
+			Xil_AssertNonvoid( Status==XST_SUCCESS );
+
+			/* Configure interrupts on the DMA core. */
+			XAxiDma_IntrEnable( &fft_objs.config_dma_obj, XAXIDMA_IRQ_IOC_MASK, XAXIDMA_DMA_TO_DEVICE );
+
+			/* Associate interrupt request routine with interrupt controller. */
+			Status = XScuGic_Connect( &intc_obj, FFT_CONFIG_DMA_MM2S_INT_ID, fft_config_dma_mm2s_handler, NULL );
+			Xil_AssertNonvoid( Status==XST_SUCCESS );
+			XScuGic_Enable( &intc_obj, FFT_CONFIG_DMA_MM2S_INT_ID );
+
+			/* Reset flag indicating whether or not the fft
+			has been configured. */
+			fft_objs.configdone = false;
+		}
+
+		/* Configure the DMA that handles exchanging data with the fft and HLS cores. */
+		{
+			int Status;
+			XAxiDma_Config* config;
+
+			config = XAxiDma_LookupConfig( FFT_PROCESS_DMA_DEVICE_ID );
+			Xil_AssertNonvoid( config!=NULL );
+			Status = XAxiDma_CfgInitialize( &fft_objs.process_dma_obj, config );
+			Xil_AssertNonvoid( Status==XST_SUCCESS );
+
+			/* Configure interrupts on the DMA core. */
+			XAxiDma_IntrEnable( &fft_objs.process_dma_obj, XAXIDMA_IRQ_IOC_MASK, XAXIDMA_DEVICE_TO_DMA );
+			XAxiDma_IntrEnable( &fft_objs.process_dma_obj, XAXIDMA_IRQ_IOC_MASK, XAXIDMA_DMA_TO_DEVICE );
+
+			/* Associate interrupt request routine with interrupt controller. */
+			Status = XScuGic_Connect( &intc_obj, FFT_PROCESS_DMA_MM2S_INT_ID, fft_process_dma_mm2s_handler, NULL );
+			Xil_AssertNonvoid( Status==XST_SUCCESS );
+			XScuGic_Enable( &intc_obj, FFT_PROCESS_DMA_MM2S_INT_ID );
+		}
+
+		/* Initialize the HLS math accel core. */
+		{
+			int Status;
+			Status = XMath_accel_Initialize( &fft_objs.maccel_obj, FFT_MACCEL_DEVICE_ID );
+			Xil_AssertNonvoid( Status==XST_SUCCESS );
+
+			XMath_accel_EnableAutoRestart( &fft_objs.maccel_obj );
+			XMath_accel_Start( &fft_objs.maccel_obj );
+		}
+	}
+
+	/* Configure OCM memory for processing samples. */
+	xil_printf( "Initializing OCM memory as device share-able for processing...\n\r" );
+	{
+		Xil_SetTlbAttributes( BUFFER_BASE_ADDR, DEVICE_MEMORY|SHAREABLE );
+	}
+
+	/* Configure software interrupt so that CPU1 can interrupt this CPU0 .*/
+	xil_printf( "Initializing CPU0's software interrupt for synchronization between CPUs...\n\r" );
+	{
+		int Status;
+		Status = XScuGic_Connect( &intc_obj, CPU_0_INT_ID, cpu_handler, NULL );
+		Xil_AssertNonvoid( Status==XST_SUCCESS );
+		XScuGic_Enable( &intc_obj, CPU_0_INT_ID );
+
+		/* Reset flag synchronization flag. */
+		cpu_objs.cpudone = false;
+
+		/* CPU1 should handle the interrupt of the DMA's output. */
+		XScuGic_InterruptMaptoCpu( &intc_obj, CPU_1_DEVICE_ID, FFT_PROCESS_DMA_S2MM_INT_ID );
+	}
+
+	/* Application main loop starts here. */
+	xil_printf( "Starting application...\n\r" );
+	{
+		/* Enable the CPU's IRQ interrupt on the APU. */
+		xil_printf( "Enabling CPU0's interrupt...\n\r" );
+		Xil_ExceptionEnable();
+
+		/* Start CPU1. This AMP mode of operation. Sort of tedious. */
+		xil_printf( "Starting CPU1 for video processing...\n\r" );
+		{
+			volatile uint32_t& start_reg = *reinterpret_cast<volatile uint32_t*>( CPU_1_START_REG );
+
+			start_reg = CPU_1_START_ADDR;
+			__asm__ __volatile__ ( "sev" );
+			while ( !cpu_objs.cpudone )
+				continue;
+		}
+
+		/* Configure FFT core and wait until the
+		configuration has been transmitted to the core. */
+		xil_printf( "Configuring fft core...\n\r" );
+		{
+			int Status;
+			static volatile uint32_t fftconfig __attribute__((aligned(0x100)));
+
+			/* Set configuration for fft and flush cache to main memory. */
+			fftconfig = FFT_CONFIG_VAL;
+			Xil_DCacheFlushRange( reinterpret_cast<INTPTR>(&fftconfig), sizeof(uint32_t) );
+
+			/* Start a simple dma transaction and block until completion. */
+			Status = XAxiDma_SimpleTransfer( &fft_objs.config_dma_obj,
+					reinterpret_cast<UINTPTR>(&fftconfig), sizeof(uint32_t),
+					XAXIDMA_DMA_TO_DEVICE );
+			Xil_AssertNonvoid( Status==XST_SUCCESS );
+			while ( !fft_objs.configdone )
+				__asm__ ("wfi");
+		}
+
+		/* Reset and enable audio buffers in ADI core. */
+		xil_printf( "Resetting and enabling tx and tx buffers in ADI core...\n\r" );
+		audio_write_mem_reset_txrx( &audio_objs.adi_obj );
+
+		/* We're good to go! */
+		xil_printf( "Starting main loop...\n\r" );
+		while ( true )
+		{
+
+			/* Grab left and right samples from the ADI core's RX buffer. */
+			uint32_t* recv_send = audio_read_mem_sample_lr( &audio_objs.adi_obj );
+
+			/* Ensure the bits are reinterpreted as signed values. */
+			int32_t samples[] =
+			{
+					convert_sample( recv_send[ 0 ] ),
+					convert_sample( recv_send[ 1 ] )
+			};
+
+			/* Apply volume shifting. */
+			{
+				int vol_shift = uio_objs.vol_shift;
+				if ( vol_shift < 0 )
+				{
+					samples[ 0 ] >>= -vol_shift;
+					samples[ 1 ] >>= -vol_shift;
+				}
+				else
+				{
+					samples[ 0 ] <<= vol_shift;
+					samples[ 1 ] <<= vol_shift;
+				}
+			}
+
+			/* Push first sample into buffer, making not sure to set the imaginary
+			bits to zero. The imaginary bits are the 16 most-significant bits. */
+			if ( getbufferset().getinput().push( ( samples[ 0 ] >> 4 ) & 0xFFFF ) )
+			{
+				int Status;
+				buffer& in = getbufferset().getinput();
+				buffer& out = getbufferset().getouput();
+
+				/* Start DMA transfers to the fft core. */
+				Status = XAxiDma_SimpleTransfer( &fft_objs.process_dma_obj,
+						out.getaddr(), sizeof(BUFFER_ARY_TYPE), XAXIDMA_DEVICE_TO_DMA );
+				Xil_AssertNonvoid( Status==XST_SUCCESS );
+
+				Status = XAxiDma_SimpleTransfer( &fft_objs.process_dma_obj,
+						in.getaddr(), sizeof(BUFFER_ARY_TYPE), XAXIDMA_DMA_TO_DEVICE );
+				Xil_AssertNonvoid( Status==XST_SUCCESS );
+
+				/* Set the next input buffer. */
+				incbufferset();
+			}
+
+			/* Store new samples back into send/receive buffer. */
+			recv_send[ 0 ] = static_cast<uint32_t>( samples[ 0 ] );
+			recv_send[ 1 ] = static_cast<uint32_t>( samples[ 1 ] );
+
+			/* Output samples to ADI core's TX buffer. */
+			audio_write_mem_sample_lr( &audio_objs.adi_obj, recv_send );
+		}
+	}
+	return 0;
+}
+
+void gpio_uio_handler( void* param )
+{
+	( void ) param;
+	uint32_t data;
+
+	/* Clear and grab input data. */
+	XGpio_InterruptClear( &uio_objs.gpio_obj, 0b01 );
+	data = XGpio_DiscreteRead( &uio_objs.gpio_obj, 1 );
+
+	/* Swap to the mic depending on the state on the button. */
+	if ( data&GPIO_UIO_USER_MIC_ENABLE )
+	{
+		audio_i2c_configure( &audio_objs.adi_obj, audio_src_MIC );
+	}
+	else
+	{
+		audio_i2c_configure( &audio_objs.adi_obj, audio_src_LINE );
+	}
+
+	/* Increase the volume. */
+	{
+		static bool prev_state = false;
+		bool curr_state = static_cast<bool>( data&GPIO_UIO_USER_INC_VOL );
+
+		if ( curr_state && !prev_state )
+			uio_objs.vol_shift++;
+		prev_state = curr_state;
+	}
+
+	/* Decrease the volume. */
+	{
+		static bool prev_state = false;
+		bool curr_state = static_cast<bool>( data&GPIO_UIO_USER_DEC_VOL );
+
+		if ( curr_state && !prev_state )
+			uio_objs.vol_shift--;
+		prev_state = curr_state;
+	}
+}
+
+void fft_config_dma_mm2s_handler( void* param )
+{
+	( void ) param;
+
+	/* Acknowledge the interrupt. */
+	XAxiDma_IntrAckIrq( &fft_objs.config_dma_obj, XAXIDMA_IRQ_IOC_MASK, XAXIDMA_DMA_TO_DEVICE );
+	fft_objs.configdone = true;
+}
+
+void fft_process_dma_mm2s_handler( void* param )
+{
+	( void ) param;
+
+	/* Acknowledge the interrupt. */
+	XAxiDma_IntrAckIrq( &fft_objs.process_dma_obj, XAXIDMA_IRQ_IOC_MASK, XAXIDMA_DMA_TO_DEVICE );
+}
+
+void fft_process_dma_s2mm_handler( void* param )
+{
+	( void ) param;
+
+	/* Acknowledge the interrupt. */
+	XAxiDma_IntrAckIrq( &fft_objs.process_dma_obj, XAXIDMA_IRQ_IOC_MASK, XAXIDMA_DEVICE_TO_DMA );
+}
+
+void cpu_handler( void* param )
+{
+	( void ) param;
+
+	XScuGic_Disable( &intc_obj, CPU_0_INT_ID );
+	cpu_objs.cpudone = true;
+}
+
+u32 XAxiDma_GetStatus( XAxiDma *InstancePtr, int Direction )
+{
+	return XAxiDma_ReadReg( InstancePtr->RegBase + (XAXIDMA_RX_OFFSET*Direction),
+			XAXIDMA_SR_OFFSET );
+}
+
+u32 XAxiDma_GetControl( XAxiDma *InstancePtr, int Direction )
+{
+	return XAxiDma_ReadReg( InstancePtr->RegBase + (XAXIDMA_RX_OFFSET*Direction),
+			XAXIDMA_CR_OFFSET );
+}
+
+void audio_mem_access_def( audio_dir dir, uint32_t phy_addr, uint32_t* data, void* param )
+{
+	( void ) param;
+	switch ( dir )
+	{
+	case audio_dir_WRITE:
+		Xil_Out32( phy_addr, *data );
+		break;
+	case audio_dir_READ:
+		*data = Xil_In32( phy_addr );
+		break;
+	}
+}
+
+void audio_i2c_trans_def( audio_dir dir, uint8_t slave_addr, uint8_t* data, size_t len, void* param )
+{
+	( void ) param;
+	int Status;
+	switch ( dir )
+	{
+	case audio_dir_WRITE:
+		{
+			Status = XIicPs_MasterSendPolled( &audio_objs.i2c_obj, data, len, slave_addr );
+		}
+		break;
+	case audio_dir_READ:
+		{
+			Status = XIicPs_MasterRecvPolled( &audio_objs.i2c_obj, data, len, slave_addr );
+		}
+		break;
+	}
+	Xil_AssertVoid( Status==XST_SUCCESS );
+}
+
+void audio_i2c_delay_def( unsigned int ms, void* param )
+{
+	( void ) param;
+	usleep( ms*1000 );
+}

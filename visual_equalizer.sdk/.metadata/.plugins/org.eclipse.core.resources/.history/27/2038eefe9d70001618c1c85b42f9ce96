@@ -1,0 +1,14 @@
+#include "shared.h"
+
+namespace shared
+{
+	bufferset bufferset_objs[ BUFFER_SET_LEN ] =
+	{
+			buffer_set( BUFFER_GET_ADDR(0), BUFFER_GET_ADDR(1) ),
+			buffer_set( BUFFER_GET_ADDR(2), BUFFER_GET_ADDR(3) )
+	};
+	size_t curr = 0;
+
+	buffer_set& get_curr_buffer_set() { return buffer_set_objs[ curr ]; }
+	void inc_curr_buffer_set() { curr = ( curr < BUFFER_SET_LEN ) ? curr+1 : 0; }
+};

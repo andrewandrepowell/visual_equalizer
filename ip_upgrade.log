@@ -1,0 +1,364 @@
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Sun Sep  4 20:50:11 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1609041915) to (Rev. 1609042049)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Sun Sep  4 19:16:07 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1609041640) to (Rev. 1609041915)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Sun Sep  4 16:41:02 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1609022052) to (Rev. 1609041640)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Fri Sep  2 20:53:46 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1609022044) to (Rev. 1609022052)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Fri Sep  2 20:47:25 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1609021848) to (Rev. 1609022044)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'block_design_math_accel_0_0'.
+
+
+-Upgrade has removed interface 'in_tlast_V'
+
+-Upgrade has removed interface 'input_stream'
+
+-Upgrade has removed interface 'out_tlast_V'
+
+-Upgrade has removed interface 'output_stream'
+
+-Upgrade has added interface 'in_stream' (xilinx.com:interface:axis:1.0)
+
+-Upgrade has added interface 'out_stream' (xilinx.com:interface:axis:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'block_design_math_accel_0_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'in_tlast_V'
+
+-Upgrade has removed port 'input_stream_TDATA'
+
+-Upgrade has removed port 'input_stream_TREADY'
+
+-Upgrade has removed port 'input_stream_TVALID'
+
+-Upgrade has removed port 'out_tlast_V'
+
+-Upgrade has removed port 'out_tlast_V_ap_vld'
+
+-Upgrade has removed port 'output_stream_TDATA'
+
+-Upgrade has removed port 'output_stream_TREADY'
+
+-Upgrade has removed port 'output_stream_TVALID'
+
+-Upgrade has added port 'in_stream_TDATA'
+
+-Upgrade has added port 'in_stream_TDEST'
+
+-Upgrade has added port 'in_stream_TID'
+
+-Upgrade has added port 'in_stream_TKEEP'
+
+-Upgrade has added port 'in_stream_TLAST'
+
+-Upgrade has added port 'in_stream_TREADY'
+
+-Upgrade has added port 'in_stream_TSTRB'
+
+-Upgrade has added port 'in_stream_TUSER'
+
+-Upgrade has added port 'in_stream_TVALID'
+
+-Upgrade has added port 'out_stream_TDATA'
+
+-Upgrade has added port 'out_stream_TDEST'
+
+-Upgrade has added port 'out_stream_TID'
+
+-Upgrade has added port 'out_stream_TKEEP'
+
+-Upgrade has added port 'out_stream_TLAST'
+
+-Upgrade has added port 'out_stream_TREADY'
+
+-Upgrade has added port 'out_stream_TSTRB'
+
+-Upgrade has added port 'out_stream_TUSER'
+
+-Upgrade has added port 'out_stream_TVALID'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Fri Sep  2 18:49:40 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1609021637) to (Rev. 1609021848)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'block_design_math_accel_0_0'.
+
+
+-Upgrade has added interface 'in_tlast_V' (xilinx.com:signal:data:1.0)
+
+-Upgrade has added interface 'out_tlast_V' (xilinx.com:signal:data:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'block_design_math_accel_0_0'. These changes may impact your design.
+
+
+-Upgrade has added port 'in_tlast_V'
+
+-Upgrade has added port 'out_tlast_V'
+
+-Upgrade has added port 'out_tlast_V_ap_vld'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Fri Sep  2 16:41:31 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1608272205) to (Rev. 1609021637)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'block_design_math_accel_0_0'.
+
+
+-Upgrade has removed interface 'in_axis'
+
+-Upgrade has removed interface 'out_axis'
+
+-Upgrade has added interface 'input_stream' (xilinx.com:interface:axis:1.0)
+
+-Upgrade has added interface 'output_stream' (xilinx.com:interface:axis:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'block_design_math_accel_0_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'in_axis_TDATA'
+
+-Upgrade has removed port 'in_axis_TDEST'
+
+-Upgrade has removed port 'in_axis_TID'
+
+-Upgrade has removed port 'in_axis_TKEEP'
+
+-Upgrade has removed port 'in_axis_TLAST'
+
+-Upgrade has removed port 'in_axis_TREADY'
+
+-Upgrade has removed port 'in_axis_TSTRB'
+
+-Upgrade has removed port 'in_axis_TUSER'
+
+-Upgrade has removed port 'in_axis_TVALID'
+
+-Upgrade has removed port 'out_axis_TDATA'
+
+-Upgrade has removed port 'out_axis_TDEST'
+
+-Upgrade has removed port 'out_axis_TID'
+
+-Upgrade has removed port 'out_axis_TKEEP'
+
+-Upgrade has removed port 'out_axis_TLAST'
+
+-Upgrade has removed port 'out_axis_TREADY'
+
+-Upgrade has removed port 'out_axis_TSTRB'
+
+-Upgrade has removed port 'out_axis_TUSER'
+
+-Upgrade has removed port 'out_axis_TVALID'
+
+-Upgrade has added port 'input_stream_TDATA'
+
+-Upgrade has added port 'input_stream_TREADY'
+
+-Upgrade has added port 'input_stream_TVALID'
+
+-Upgrade has added port 'output_stream_TDATA'
+
+-Upgrade has added port 'output_stream_TREADY'
+
+-Upgrade has added port 'output_stream_TVALID'
+
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Thu Sep  1 12:55:57 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_axi_i2s_adi_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of block_design_axi_i2s_adi_0_0 (analogdeviceinc.com:adi:axi_i2s_adi:1.0) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.2 (lin64) Build 1577090 Thu Jun  2 16:32:35 MDT 2016
+| Date         : Sat Aug 27 22:06:56 2016
+| Host         : andrewandrepowell2-desktop running 64-bit Ubuntu 16.04 LTS
+| Command      : upgrade_ip
+| Device       : xc7z010clg400-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'block_design_math_accel_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of block_design_math_accel_0_0 (xilinx.com:hls:math_accel:1.0) from (Rev. 1608272106) to (Rev. 1608272205)
+

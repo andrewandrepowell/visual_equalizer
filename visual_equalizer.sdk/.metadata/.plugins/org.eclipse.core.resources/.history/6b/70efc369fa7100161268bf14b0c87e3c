@@ -1,0 +1,45 @@
+#ifndef MAT_H_
+#define MAT_H_
+
+#include <stdio.h>
+#include <stdint.h>
+
+namespace la
+{
+	template <typename TYPE_,int SIZE_>
+	class pixel
+	{
+	public:
+		pixel() { }
+		pixel( const TYPE_* data )
+		{
+			for ( int each_ch=0; each_ch<SIZE_; each_ch++ )
+				this->data[ each_ch ] = data[ each_ch ];
+		}
+		~pixel() { }
+		TYPE_* get() { data; }
+	private:
+		TYPE_ data[ SIZE_ ];
+	};
+
+	template <typename TYPE_,int ROWS_,int COLS_,int STRIDE_>
+	class mat
+	{
+	public:
+		mat() { }
+		~mat() { }
+		TYPE_* get() { return data; }
+		TYPE_* get( int row ) {	return reinterpret_cast<TYPE_*>(reinterpret_cast<uint8_t*>(data)+STRIDE_*row); }
+		TYPE_& get( int row, int col ) { return *(getrow( row )+col); }
+	private:
+		TYPE_ data[ STRIDE_*ROWS_ ];
+	};
+
+	template <typename TYPE_,int ROWS0_,int COLS0_,int ROWS1_,int COLS1_,int STRIDE_>
+	mat<TYPE_,ROWS1_,COLS1_,STRIDE_>& getroi( const mat<TYPE_,ROWS0_,COLS0_,STRIDE_>& mat0, int row, int col )
+	{
+		reinterpret_cast<uint8_t*>(&mat0)+STRIDE_*row
+	}
+};
+
+#endif

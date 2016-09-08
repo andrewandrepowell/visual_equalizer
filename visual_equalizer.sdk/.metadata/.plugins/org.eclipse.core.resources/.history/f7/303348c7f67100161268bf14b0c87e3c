@@ -1,0 +1,50 @@
+#ifndef MAT_H_
+#define MAT_H_
+
+#include <stdio.h>
+
+namespace la
+{
+	template <typename TYPE_,int SIZE_>
+	class pixel
+	{
+	public:
+		pixel() { }
+		pixel( TYPE_* data )
+		{
+			for ( int each_ch=0; each_ch<SIZE_; each_ch++ )
+				this->data[ each_ch ] = data[ each_ch ];
+		}
+		const pixel& operator=( const pixel& ref )
+		{
+			for ( int each_ch=0; each_ch<SIZE_; each_ch++ )
+				data[ each_ch ] = ref.data[ each_ch ];
+			return ref;
+		}
+		pixel( const pixel& ref ) { *this = ref; }
+		~pixel() { }
+		TYPE_* get() { data; }
+		int size() { return SIZE_; }
+	private:
+		TYPE_ data[ SIZE_ ];
+	};
+
+	template <typename TYPE_,int ROWS_,int COLS_,int STRIDE_>
+	class mat
+	{
+	public:
+		mat() : rows( 0 ), cols( 0 ), stride ( 0 ), data( NULL ) { }
+		mat( TYPE_* data, int rows, int cols, int stride ) :
+			data( data ), rows( rows ), cols( cols ), stride( stride ) { }
+		~mat() { }
+		TYPE_* getrow( int row ) { return data+stride*row; }
+		TYPE_& get( int row, int col ) { return *(getrow( row )+col); }
+		int nrows() { return rows; }
+		int ncols() { return cols; }
+	private:
+		TYPE_* data;
+	};
+
+};
+
+#endif

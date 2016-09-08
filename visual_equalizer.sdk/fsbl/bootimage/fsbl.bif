@@ -1,0 +1,8 @@
+//arch = zynq; split = false; format = BIN
+the_ROM_image:
+{
+	[bootloader]/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/fsbl/Debug/fsbl.elf
+	/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/block_design_wrapper_hw_platform_0/block_design_wrapper.bit
+	/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/cpu0_app/Debug/cpu0_app.elf
+	/opt/Xilinx/Projects/visual_equalizer/visual_equalizer.sdk/cpu1_app/Debug/cpu1_app.elf
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vivadoHLSLog:LogRoot xmlns:vivadoHLSLog="www.xilinx.com/vivadoHLSLog">
+  <errorLogs>
+    <logs>
+      <synLog/>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog/>
+    </logs>
+  </errorLogs>
+  <warningLogs>
+    <logs>
+      <synLog>
+        <logs message="WARNING: [SYN 201-103] Legalizing function name 'math_accel_Block__ZrsILi32ELb0EE11ap_int_.1' to 'math_accel_Block_ZrsILi32ELb0EE11ap_int_1'." projectName="math_accel" solutionName="solution1" date="2016-09-04T20:47:50.093-0400" type="Warning"/>
+        <logs message="WARNING: [SYN 201-103] Legalizing function name 'math_accel___hls_fptoui_double_i321' to 'math_accel_hls_fptoui_double_i321'." projectName="math_accel" solutionName="solution1" date="2016-09-04T20:47:50.080-0400" type="Warning"/>
+        <logs message="WARNING: [SYN 201-103] Legalizing function name 'math_accel_Block__ZrsILi32ELb0EE11ap_int_' to 'math_accel_Block_ZrsILi32ELb0EE11ap_int_s'." projectName="math_accel" solutionName="solution1" date="2016-09-04T20:47:50.074-0400" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-631] Renaming function 'Block__ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit13_proc1' (math_accel/solution1/math_accel.cpp:44:2) into Block__ZrsILi32ELb0EE11ap_int_.1." projectName="math_accel" solutionName="solution1" date="2016-09-04T20:47:50.071-0400" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-631] Renaming function 'Block__ZrsILi32ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit1_proc' (math_accel/solution1/math_accel.cpp:27:36) into Block__ZrsILi32ELb0EE11ap_int_." projectName="math_accel" solutionName="solution1" date="2016-09-04T20:47:49.057-0400" type="Warning"/>
+      </synLog>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog/>
+    </logs>
+  </warningLogs>
+</vivadoHLSLog:LogRoot>
